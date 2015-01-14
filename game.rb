@@ -2,7 +2,8 @@ puts "I'm thinking of a secret number between 1 and 100!"
 puts "Take a guess! You have 5 chances."
 
 def computer_number_generator()
-  return rand(100) + 1
+  my_own_array = (1..100).to_a
+  return my_own_array.sample
 end
 
 def person_guesses()
@@ -12,6 +13,8 @@ def person_guesses()
   count = 0
   tries = []
   tries << user_guess
+  low_tries = []
+  high_tries = []
   while((user_guess != computer_number) && (count < 4))
     count = count + 1
     newest_guess = tries.pop
@@ -19,9 +22,19 @@ def person_guesses()
       puts "Dummy McDumpypants...you already said that!"
     else
       if(user_guess < computer_number)
-        puts "Uh oh, too low! Try again!"
+        low_tries << user_guess
+        if (count != 1) && (user_guess < low_tries.max) && (low_tries.length != 0)
+          puts "Why can't you listen? I said, it's not that low!"
+        else
+          puts "Uh oh, too low! Try again!"
+        end
       else
-        puts "Nice try, but too high! Try again!"
+        high_tries << user_guess
+        if (count != 1) && (user_guess > high_tries.min) && (high_tries.length != 0)
+          puts "Why weren't you paying attention? I told you, that's too high!"
+        else
+          puts "Nice try, but too high! Try again!"
+        end
       end
     end
     tries << newest_guess
